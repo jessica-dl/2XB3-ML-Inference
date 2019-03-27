@@ -3,12 +3,15 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/infer', methods=['POST'])
 def process_image():
     print(request.files)
     # checking if the file is present or not.
     if 'file' not in request.files:
         return "No file found"
+
+    def age_face(img):
+        return img
 
     img = request.files['file']
     new_img = age_face(img)
@@ -20,8 +23,10 @@ def process_image():
         return str(e)
 
 
-def age_face(img):
-    return img
+@app.route('/', methods=['GET'])
+def get_request():
+    return 'Hello World'
 
 
-app.run()
+if __name__ == '__main__':
+    app.run()
