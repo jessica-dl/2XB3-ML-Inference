@@ -2,8 +2,10 @@ from flask import Flask, request, send_file
 import cv2
 import numpy as np
 import io
+from .inference import Inference
 
 app = Flask(__name__)
+inference = Inference("encoder.h5", "generator.h5")
 
 
 @app.route('/infer', methods=['POST'])
@@ -12,11 +14,15 @@ def process_image():
     if 'file' not in request.files:
         return "No file found"
     file = request.files.get('file')
+    age = request.form('age')
     file_str = file.read()
 
     nparr = np.fromstring(file_str, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # cv2.IMREAD_COLOR in OpenCV 3.1
-    img_encoded = cv2.imencode('.png', img_np)[1].tobytes()
+    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    infer_img = inference.infer(img_np, age)
+
+    img_encoded = cv2.imencode('.png', infer_img)[1].tobytes()
 
     return send_file(
         io.BytesIO(img_encoded),

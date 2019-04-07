@@ -7,6 +7,8 @@ setup(name='ml_inference',
       install_requires=[
           'flask',
           'numpy',
-          'opencv-python'
+          'opencv-python',
+          'tensorflow',
+          'keras'
       ],
       zip_safe=False)
