@@ -6,6 +6,7 @@ setup(name='ml_inference',
       description='ML Inference server for CS 2XB3',
       install_requires=[
           'flask',
-          'numpy'
+          'numpy',
+          'opencv-python'
       ],
       zip_safe=False)
