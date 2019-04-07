@@ -3,6 +3,9 @@ import cv2
 import numpy as np
 import io
 from .inference import Inference
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 inference = Inference("encoder.h5", "generator.h5")
@@ -14,7 +17,7 @@ def process_image():
     if 'file' not in request.files:
         return "No file found"
     file = request.files.get('file')
-    age = request.form('age')
+    age = int(request.form.get('age'))
     file_str = file.read()
 
     nparr = np.fromstring(file_str, np.uint8)

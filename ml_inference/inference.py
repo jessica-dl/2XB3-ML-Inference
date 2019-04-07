@@ -11,11 +11,25 @@ class Inference:
         self.encoder = load_model(encoder_fp)
         self.generator = load_model(generator_fp)
 
+        self.encoder.summary()
+        self.generator.summary()
+
+        self.encoder._make_predict_function()
+        self.generator._make_predict_function()
+
     def infer(self, img, age):
-        img = cv2.resize(img, (64, 64, 3))
-        latent_vec = self.encoder(img)
+        img = cv2.resize(img, (64, 64))
+
+        img = (img.astype(np.float32) - 127.5) / 127.5
+
+        img = np.expand_dims(img, axis=0)
+
+        latent_vec = self.encoder.predict(img)
         encoded_age = self.__encode_age(age)
-        new_img = self.generator([latent_vec, encoded_age])
+        new_img = self.generator.predict([latent_vec, encoded_age])[0]
+
+        new_img = ((0.5 * new_img + 0.5) * 255)
+
         return new_img
 
     def __encode_age(self, age):
@@ -33,4 +47,4 @@ class Inference:
         else:
             age_array[5] = 1
 
-        return age_array
+        return np.expand_dims(age_array, axis=0)
