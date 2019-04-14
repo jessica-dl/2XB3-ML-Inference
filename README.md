@@ -1,7 +1,6 @@
 # Machine Learning Inference
 
 ## Running locally
-```bash
-pip install -e .
-python -m ml_inference
-```
+
+From outside the `ml_inference` folder, first run ```bash pip install -e .``` to install necessary dependencies.
+To run the API, use ```bash -m ml_inference```.
