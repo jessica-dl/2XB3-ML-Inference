@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: Machine Learning Inference
+  version: 2.0.0
+paths:
+  /streams:
+    post:
+      description: a client receives an aged version of the inputted image
+      parameters:
+        - name: img
+          in: query
+          required: true
+          description: |
+            the image to be aged by the inference
+          schema:
+            type: image
+            format: png
+      responses:
+        'No file found':
+          description: client did not send image file in POST
+          content: str
+        'image':
+          description: client receives image file
+          content: image file
